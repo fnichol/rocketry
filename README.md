@@ -2,7 +2,11 @@
 
 [![Build Status](https://travis-ci.org/fnichol/rocketry.svg?branch=master)](https://travis-ci.org/fnichol/rocketry) [![license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/fnichol/rocketry/blob/master/LICENSE-MIT)
 
-This is a small sample web application written in Rust using the Rocket project and includes a Habitat plan which can build this into a package. It takes one optional command line argument which is a port number to use, otherwise defaulting to `8000` so that it can run without root permissions. The simple Rocket application is setup to run in "production" mode and will skip all `Rocket.toml` and environment variables. This isn't a requirement per se, but illustrative of how Habitat can manage these details dynamically on behalf of a service.
+This is a small sample web application written in [Rust](https://www.rust-lang.org/en-US/) using the [Rocket](https://rocket.rs/) project and includes a [Habitat](https://www.habitat.sh/) Plan which can build this into a package.
+
+* It takes one optional command line argument which is a port number to use, otherwise defaulting to `8000` so that it can run without root permissions.
+* The simple Rocket application is setup to run in "production" mode and will skip all `Rocket.toml` and environment variables. This isn't a requirement per se, but illustrative of how Habitat can manage these details dynamically on behalf of a service.
+* The Habitat Plan builds a statically linked, relocatable binary for its package using a [musl](https://www.musl-libc.org/) target.
 
 ## Pre-requisites
 
