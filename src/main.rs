@@ -1,12 +1,10 @@
-#![feature(plugin, decl_macro)]
-#![plugin(rocket_codegen)]
-
+#[macro_use]
 extern crate rocket;
 
 use std::env;
 use std::process;
 
-use rocket::config::Config;
+use rocket::figment::Figment;
 
 const DEFAULT_PORT: u16 = 8000;
 
@@ -15,14 +13,16 @@ fn index() -> &'static str {
     "Hello, world!"
 }
 
-fn main() {
-    rocket::custom(config(), true)
+#[rocket::main]
+async fn main() -> Result<(), rocket::Error> {
+    let _rocket = rocket::custom(figment())
         .mount("/", routes![index])
-        .launch();
+        .launch()
+        .await?;
+    Ok(())
 }
 
-fn config() -> Config {
-    let mut config = Config::production().expect("Cannot prepare Rocket config");
+fn figment() -> Figment {
     let port = match env::args().nth(1) {
         Some(port_str) => {
             match port_str.parse::<u16>() {
@@ -39,6 +39,6 @@ fn config() -> Config {
         }
         None => DEFAULT_PORT,
     };
-    config.set_port(port);
-    config
+
+    rocket::Config::figment().merge(("port", port))
 }
